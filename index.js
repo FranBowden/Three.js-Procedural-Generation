@@ -1,14 +1,16 @@
-import * as THREE from 'three'
-import { moveBackwards, moveLeft, moveForward, moveRight, controls } from './controls.js';
-import {GUI} from '../node_modules/dat.gui/build/dat.gui.module.js'; //importing gui for control system
+
+import { GUI } from 'https://cdn.jsdelivr.net/npm/dat.gui@0.7.9/build/dat.gui.module.js';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
 
 let scene = new THREE.Scene( ); //new scene
 
-export var camera = new THREE.PerspectiveCamera(50,window.innerWidth/window.innerHeight,0.1,1000); //perspective camera
+var camera = new THREE.PerspectiveCamera(50,window.innerWidth/window.innerHeight,0.1,1000); //perspective camera
 
 camera.position.set(0,10,0); //set camera position 
 
-export var renderer = new THREE.WebGLRenderer( );
+ var renderer = new THREE.WebGLRenderer( );
 
 renderer.setSize(window.innerWidth,window.innerHeight); //render size
 
@@ -145,3 +147,66 @@ window.addEventListener( 'resize', MyResize);
 
 
 renderer.render(scene,camera); //render scene and camera
+
+var controls = new OrbitControls( camera, renderer.domElement );
+
+var moveForward = false,
+   moveBackwards = false,
+   moveLeft = false,
+   moveRight = false;
+
+var OnKeyDown = function(event) {
+ switch(event.keyCode) {
+   case 38:
+   case 87:
+     console.log("up")
+     moveForward = true;
+     break;
+
+   case 37:
+   case 65:
+   console.log("left")
+   moveLeft = true;
+     break;
+
+   case 40:
+   case 83:
+     console.log("down")
+     moveBackwards = true;
+       break;
+   case 39:
+   case 68:
+     console.log("right")
+     moveRight = true;
+       break;
+ }
+}
+
+var OnKeyUp = function(event) {
+ switch(event.keyCode) {
+   case 38:
+   case 87:
+     moveForward = false;
+     console.log("up release")
+     break;
+   case 37:
+   case 65:
+   moveLeft = false;
+   console.log("left release")
+     break;
+   case 40:
+   case 83:
+     moveBackwards = false;
+     console.log("down release")
+       break;
+   case 39:
+   case 68:
+     moveRight = false;
+     console.log("right release")
+       break;
+
+ }
+}
+
+window.addEventListener('keydown', OnKeyDown, false); //on keydown trigger onkeyedown function
+window.addEventListener('keyup', OnKeyUp, false);
